@@ -11,7 +11,7 @@ Provides aliases, a cache-flush helper, and cached tab completion for the `mageb
 1. Clone into your custom plugins directory:
 
    ```sh
-   git clone https://github.com/jerke/ohmyzsh-magebox.git \
+   git clone https://github.com/jcombee/ohmyzsh-magebox.git \
      ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/magebox
    ```
 

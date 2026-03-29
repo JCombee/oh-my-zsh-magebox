@@ -10,6 +10,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 
 - 45 aliases with `mb` prefix covering core, database, logs, testing, PHP, Xdebug, Varnish, Redis, SSL/domain, config, and sync commands
 - `mbflush` helper function to flush Redis, Varnish, and Magento caches in one command
+- `magebox_prompt_info` function for theme integration — shows project name, PHP version, and running/stopped status (green/red) when inside a magebox project
 - Cached tab completion via `magebox completion zsh`, refreshed in background on shell startup
 - README with full alias reference
 - MIT license

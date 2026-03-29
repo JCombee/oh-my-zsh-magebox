@@ -73,6 +73,38 @@ alias mbcfs='magebox config set'
 alias mbsync='magebox sync'
 alias mbfetch='magebox fetch'
 
+# Prompt segment: shows magebox running status when inside a project directory
+# Usage: add $(magebox_prompt_info) to your PROMPT or RPROMPT
+function magebox_prompt_info() {
+  # Walk up to find .magebox.yaml (check cwd and parents, up to 5 levels)
+  local dir="$PWD"
+  local i=0
+  while [[ "$dir" != "/" && $i -lt 5 ]]; do
+    [[ -f "$dir/.magebox.yaml" ]] && break
+    dir="${dir:h}"
+    (( i++ ))
+  done
+  [[ ! -f "$dir/.magebox.yaml" ]] && return
+
+  # Read project name from yaml to match against its specific socket
+  local name=""
+  while IFS= read -r line; do
+    case "$line" in
+      name:*) name="${line#name: }"; break ;;
+    esac
+  done < "$dir/.magebox.yaml"
+  [[ -z "$name" ]] && return
+
+  # Check for this project's nginx vhost (created on start, removed on stop)
+  local vhost_match
+  vhost_match=("$HOME/.magebox/nginx/vhosts/${name}-"*.conf(N))
+  if (( ${#vhost_match} )); then
+    echo "%{$fg[magenta]%}mb:(%{$fg[green]%}▶%{$fg[magenta]%})%{$reset_color%}"
+  else
+    echo "%{$fg[magenta]%}mb:(%{$fg[red]%}■%{$fg[magenta]%})%{$reset_color%}"
+  fi
+}
+
 # Flush all caches (Redis + Varnish + Magento)
 function mbflush() {
   echo "Flushing Redis..."

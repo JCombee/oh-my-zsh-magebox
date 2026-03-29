@@ -2,7 +2,7 @@
 
 Oh-My-Zsh plugin for [magebox](https://magebox.dev/) — a modern development environment for Magento 2 and MageOS.
 
-Provides aliases, a cache-flush helper, and cached tab completion for the `magebox` CLI.
+Provides aliases, a cache-flush helper, prompt status indicator, and cached tab completion for the `magebox` CLI.
 
 ## Installation
 
@@ -134,9 +134,34 @@ Provides aliases, a cache-flush helper, and cached tab completion for the `mageb
 
 ## Functions
 
-| Function  | Description                                              |
-|-----------|----------------------------------------------------------|
-| `mbflush` | Flush all caches — Redis, Varnish (if enabled), and Magento `cache:flush` |
+| Function              | Description                                              |
+|-----------------------|----------------------------------------------------------|
+| `mbflush`             | Flush all caches — Redis, Varnish (if enabled), and Magento `cache:flush` |
+| `magebox_prompt_info` | Prompt segment showing running/stopped status |
+
+## Prompt Status
+
+The plugin exposes a `magebox_prompt_info` function that shows the current magebox project status in your prompt. When you `cd` into a magebox project (or any subdirectory up to 5 levels deep), it displays:
+
+- **Green** — `mb:(▶)`
+- **Red** — `mb:(■)`
+- **Hidden** — not inside a magebox project
+
+### Setup
+
+Add `$(magebox_prompt_info)` to your `PROMPT` or `RPROMPT`. For example, with the default robbyrussell theme, add to your `~/.zshrc` after oh-my-zsh is sourced:
+
+```zsh
+PROMPT+=' $(magebox_prompt_info)'
+```
+
+Or use it in `RPROMPT` to keep it on the right side:
+
+```zsh
+RPROMPT='$(magebox_prompt_info)'
+```
+
+The detection is file-based (checks for `.magebox.yaml` and PHP-FPM sockets) so it adds no noticeable latency to your prompt.
 
 ## Tab Completion
 
